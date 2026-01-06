@@ -57,3 +57,13 @@ htmlcov/
 frontend/
 backend/
 hf-todo-api/
+
+# Other folders removed from GitHub
+.claude/
+.specify/
+history/
+specs/
+CLAUDE.md
+README.md
+vercel.json
+nul
