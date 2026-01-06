@@ -1,0 +1,38 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "title": "grocerry items",
+      "description": "tea,biscuits,cake,facewash,soap",
+      "completed": false,
+      "priority": "high",
+      "due_date": "",
+      "category": "shopping",
+      "due_time": "",
+      "recurrence": "none"
+    },
+    {
+      "id": 2,
+      "title": "breakfast",
+      "description": "milk,bread,butter",
+      "completed": true,
+      "priority": "high",
+      "due_date": "",
+      "category": "shopping",
+      "due_time": "",
+      "recurrence": "none"
+    },
+    {
+      "id": 3,
+      "title": "giaic students",
+      "description": "saima,bisma,sobia",
+      "completed": false,
+      "priority": "medium",
+      "due_date": "",
+      "category": "personal",
+      "due_time": "",
+      "recurrence": "weekly"
+    }
+  ],
+  "next_id": 4
+}
