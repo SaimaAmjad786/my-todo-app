@@ -4,6 +4,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { TodoList } from "@/components/todo/TodoList";
+import { ChatPanel } from "@/components/chat";
 import { motion } from "framer-motion";
 import { ListTodo } from "lucide-react";
 
@@ -87,6 +88,9 @@ export default function DashboardPage() {
           </div>
         </motion.div>
       </main>
+
+      {/* AI Chat Panel */}
+      <ChatPanel />
     </div>
   );
 }

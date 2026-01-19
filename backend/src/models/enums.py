@@ -18,3 +18,11 @@ class Recurrence(str, Enum):
     DAILY = "daily"
     WEEKLY = "weekly"
     MONTHLY = "monthly"
+
+
+class MessageRole(str, Enum):
+    """Chat message roles for AI conversations."""
+
+    USER = "user"
+    ASSISTANT = "assistant"
+    SYSTEM = "system"

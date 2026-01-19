@@ -118,3 +118,46 @@ export interface TodoFilters {
   page?: number;
   page_size?: number;
 }
+
+// Chat types
+export interface ToolCall {
+  tool: string;
+  arguments: Record<string, unknown>;
+  result: Record<string, unknown>;
+}
+
+export interface ChatRequest {
+  message: string;
+  conversation_id?: string;
+}
+
+export interface ChatResponse {
+  conversation_id: string;
+  response: string;
+  tool_calls: ToolCall[];
+}
+
+export interface ConversationInfo {
+  id: string;
+  title: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ConversationListResponse {
+  conversations: ConversationInfo[];
+  total: number;
+}
+
+export interface MessageInfo {
+  id: string;
+  role: "user" | "assistant" | "system";
+  content: string;
+  tool_calls?: ToolCall[];
+  created_at: string;
+}
+
+export interface ConversationDetailResponse {
+  conversation: ConversationInfo;
+  messages: MessageInfo[];
+}

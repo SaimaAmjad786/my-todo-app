@@ -1,40 +1,49 @@
 <!--
   Sync Impact Report
   ==================
-  Version change: 3.0.0 → 3.1.0 (MINOR: Authentication approach clarified)
+  Version change: 3.1.0 → 4.0.0 (MAJOR: Phase III scope defined with AI Chatbot architecture)
 
   Modified principles:
-    - VIII. Authentication & Security → Changed from "Better Auth" to "JWT with python-jose + passlib"
+    - Phase Summary table → Phase II marked "Completed", Phase III marked "Current"
+    - Current Phase → Changed from Phase II to Phase III
+    - VIII. Authentication & Security → Extended to include Phase III auth continuity
 
   Modified sections:
-    - "Technical Stack / Phase II" → Updated Authentication row to JWT
-    - "User Entity (Phase II)" → Added hashed_password field, removed Better Auth reference
-    - Styling → Changed from "TBD" to "Tailwind CSS"
+    - "Technical Stack" → Added Phase III stack (OpenAI Agents SDK, MCP, ChatKit)
+    - "Feature Progression Rules / Advanced Level" → Now IN SCOPE with detailed features
+    - "Success Criteria" → Added Phase III completion requirements
+    - "Todo Domain Model" → Added Phase III extensions (Conversation, Message entities)
+    - "Out of scope for Phase II" → Moved AI functionality to Phase III
 
   Added sections:
-    - None
+    - "Phase III Layers (AI Chatbot)" under Clean Architecture
+    - "Conversation Entity (Phase III)"
+    - "Message Entity (Phase III)"
+    - "MCP Tools Definition"
+    - "Phase III Completion Requirements"
 
   Removed sections: None
 
   Templates requiring updates:
-    - None (templates are generic)
+    - .specify/templates/plan-template.md → No changes needed (generic)
+    - .specify/templates/spec-template.md → No changes needed (generic)
+    - .specify/templates/tasks-template.md → No changes needed (generic)
 
   Follow-up TODOs:
-    - Update plan.md to align with JWT auth approach ✅
+    - Create Phase III feature specification (/sp.specify)
+    - Create Phase III implementation plan (/sp.plan)
+    - Create Phase III tasks (/sp.tasks)
 
-  Amendment Notes (3.1.0):
-    - MINOR change: Clarified authentication implementation
-    - Changed from Better Auth SDK to custom JWT (python-jose + passlib)
-    - Rationale: Custom JWT provides better FastAPI integration and avoids third-party SDK dependency
-    - User entity now explicitly includes hashed_password field
-    - This aligns constitution with actual implemented code
-
-  Previous Amendment Notes (3.0.0):
-    - MAJOR change: Phase II scope significantly expanded
-    - Recurring tasks moved from Phase III to Phase II
-    - Due dates with reminders moved from Phase III to Phase II
-    - Browser notifications for reminders added to Phase II scope
-    - Phase III now focuses solely on AI-powered intelligent features
+  Amendment Notes (4.0.0):
+    - MAJOR change: Phase III scope fully defined
+    - AI Chatbot using MCP (Model Context Protocol) with OpenAI Agents SDK
+    - Frontend: OpenAI ChatKit
+    - Backend: FastAPI (existing, extended)
+    - AI Logic: OpenAI Agents SDK
+    - Tools: Official MCP SDK for todo operations
+    - Stateless architecture with all state in Neon PostgreSQL
+    - Authentication continues with existing Better Auth/JWT
+    - New entities: Conversation, Message for chat persistence
 -->
 
 # The Evolution of Todo Constitution
@@ -50,12 +59,12 @@ AI is used not as a shortcut, but as a disciplined engineering tool that follows
 | Phase | Level | Description | Status |
 |-------|-------|-------------|--------|
 | Phase I | Basic | In-memory CLI application | Completed |
-| Phase II | Intermediate | Full-stack web application | Current |
-| Phase III | Advanced | Intelligent features | Future |
+| Phase II | Intermediate | Full-stack web application | Completed |
+| Phase III | Advanced | AI-powered conversational chatbot | Current |
 
 ### Current Phase
 
-**Phase II — Intermediate Level** (Full-stack Web Application)
+**Phase III — Advanced Level** (AI-Powered Conversational Todo Chatbot)
 
 ### Phase Isolation Rules
 
@@ -64,6 +73,7 @@ AI is used not as a shortcut, but as a disciplined engineering tool that follows
 - Features from future phases MUST NOT be implemented until explicitly specified
 - When transitioning phases, the previous phase codebase serves as the stable foundation
 - Phase II does NOT extend Phase I code; it is a new implementation following the same domain model
+- Phase III extends Phase II by adding AI chatbot capabilities while preserving existing todo functionality
 
 ## AI Role Definition
 
@@ -107,6 +117,14 @@ The codebase MUST maintain strict separation of concerns to support future evolu
 - **API Layer (REST)**: Handle HTTP requests, validation, and response formatting
 - **Frontend Layer (Next.js)**: Handle user interface, state management, and API communication
 
+**Phase III Layers (AI Chatbot)**:
+- **Domain Layer (Models)**: Extend with Conversation and Message entities via SQLModel
+- **Service Layer (Business Logic)**: Existing todo services remain unchanged
+- **MCP Tools Layer**: MCP server exposing todo operations as tools for AI agent
+- **AI Agent Layer (OpenAI Agents SDK)**: Process natural language, invoke MCP tools, manage conversation flow
+- **API Layer (REST)**: Extended with chat endpoints for conversation management
+- **Frontend Layer (ChatKit)**: OpenAI ChatKit for conversational UI
+
 Architectural constraints:
 - Avoid monolithic functions
 - Design for future evolution into distributed systems
@@ -147,6 +165,14 @@ All user interfaces MUST provide a professional user experience.
 - Fully responsive design (desktop + mobile)
 - Clear feedback for all user actions (loading indicators, success/error states)
 - Accessible design following WCAG guidelines
+
+**Chat UI (Phase III)**:
+- Conversational interface using OpenAI ChatKit
+- Clear distinction between user messages and AI responses
+- Loading indicators during AI processing
+- Error messages displayed inline in conversation
+- Chat history persistence and resumption
+- Natural language input with no required syntax
 
 **Rationale**: Good UX builds trust and reduces user frustration, even in educational projects.
 
@@ -191,6 +217,13 @@ All functionality MUST be verifiable.
 - Frontend components SHOULD have unit tests
 - Feature completion is defined by full spec compliance plus passing tests
 
+**Phase III (AI Chatbot)**:
+- Each specification MUST map to observable chat behavior
+- MCP tools MUST have unit tests verifying correct todo operations
+- AI agent responses MUST be validated against expected behavior patterns
+- Conversation persistence MUST be verified across server restarts
+- Integration tests MUST verify end-to-end chat flows
+
 **Rationale**: Verification ensures that specifications translate to working features users can experience.
 
 ### VII. Web Architecture
@@ -208,7 +241,7 @@ Phase II MUST follow REST architecture principles.
 
 ### VIII. Authentication & Security
 
-Phase II MUST implement secure user authentication.
+Phase II and Phase III MUST implement secure user authentication.
 
 - Authentication MUST use JWT (JSON Web Tokens) with python-jose and passlib
 - User signup and signin flows MUST be implemented
@@ -217,8 +250,22 @@ Phase II MUST implement secure user authentication.
 - API endpoints MUST validate JWT tokens via middleware
 - Sensitive data MUST NOT be logged or exposed in error messages
 - HTTPS MUST be used in production environments
+- Phase III conversations MUST be scoped to authenticated users
+- AI responses MUST NOT leak data from other users
 
 **Rationale**: Custom JWT authentication provides full control over the auth flow, simpler integration with FastAPI, and avoids third-party SDK dependencies while maintaining security best practices.
+
+### IX. Stateless AI Architecture
+
+Phase III MUST be fully stateless with all state persisted in the database.
+
+- AI agent MUST NOT maintain in-memory state between requests
+- All conversation state MUST be stored in Neon PostgreSQL
+- Chat history MUST be retrievable and resumable after server restart
+- MCP tools MUST operate on database-persisted todos
+- Each request MUST be independently processable with conversation context loaded from database
+
+**Rationale**: Stateless architecture enables horizontal scaling, fault tolerance, and simpler deployment without sticky sessions.
 
 ## Technical Stack
 
@@ -238,7 +285,7 @@ Phase II MUST implement secure user authentication.
 - Concurrency or asynchronous execution
 - AI functionality inside the application
 
-### Phase II (Current)
+### Phase II (Completed)
 
 | Component | Technology | Notes |
 |-----------|------------|-------|
@@ -255,6 +302,25 @@ Phase II MUST implement secure user authentication.
 - Real-time features (WebSockets)
 - Background job processing
 - AI functionality inside the application
+- Mobile applications
+
+### Phase III (Current)
+
+| Component | Technology | Notes |
+|-----------|------------|-------|
+| Backend Language | Python 3.13+ | FastAPI (extended from Phase II) |
+| Database | Neon Serverless PostgreSQL | Same as Phase II, extended schema |
+| ORM / Data Layer | SQLModel | Extended with Conversation, Message models |
+| AI Framework | OpenAI Agents SDK | Agent orchestration and tool calling |
+| Tool Protocol | MCP (Model Context Protocol) | Official MCP SDK for tool exposure |
+| Chat Frontend | OpenAI ChatKit | Conversational UI component library |
+| Authentication | JWT (python-jose + passlib) | Continued from Phase II |
+| API Architecture | REST | Extended with chat endpoints |
+
+**Out of scope for Phase III:**
+- Voice input/output
+- Multi-modal AI (images, files)
+- Real-time collaborative editing
 - Mobile applications
 
 ## Todo Domain Model
@@ -289,6 +355,44 @@ Each User MUST include:
 - `created_at`: Timestamp (auto-generated)
 - `updated_at`: Timestamp (auto-updated)
 
+### Conversation Entity (Phase III)
+
+Each Conversation MUST include:
+- `id`: UUID, unique, auto-generated
+- `user_id`: Foreign key to User entity (required)
+- `title`: Optional string (auto-generated from first message or user-provided)
+- `created_at`: Timestamp (auto-generated)
+- `updated_at`: Timestamp (auto-updated on new message)
+
+### Message Entity (Phase III)
+
+Each Message MUST include:
+- `id`: UUID, unique, auto-generated
+- `conversation_id`: Foreign key to Conversation entity (required)
+- `role`: Enum (user / assistant / system)
+- `content`: Non-empty string (message text)
+- `tool_calls`: Optional JSON (MCP tool invocations made by assistant)
+- `tool_results`: Optional JSON (results from MCP tool executions)
+- `created_at`: Timestamp (auto-generated)
+
+### MCP Tools Definition
+
+The MCP server MUST expose these tools for the AI agent:
+
+- `add_todo`: Create a new todo with title, optional description, priority, tags, due_date
+- `list_todos`: Retrieve todos with optional filters (status, priority, tags, search query)
+- `get_todo`: Retrieve a specific todo by ID
+- `update_todo`: Modify an existing todo's fields
+- `delete_todo`: Remove a todo permanently
+- `complete_todo`: Mark a todo as completed
+- `uncomplete_todo`: Mark a todo as incomplete
+
+All MCP tools MUST:
+- Operate on the authenticated user's todos only
+- Return structured JSON responses
+- Include error information on failure
+- Be idempotent where applicable
+
 ### Domain Rules
 
 **Phase I:**
@@ -304,6 +408,14 @@ Each User MUST include:
 - Deleting a Todo permanently removes it from the database
 - IDs are UUIDs, globally unique
 
+**Phase III:**
+- All Phase II domain rules continue to apply
+- Conversations are persisted in Neon PostgreSQL
+- Conversations are scoped to the authenticated user
+- Users can only access their own conversations
+- Messages within a conversation are ordered by creation timestamp
+- Conversations can be resumed after server restart by loading message history
+
 ## Feature Progression Rules
 
 ### Basic Level — Core Essentials (Phase I - Completed)
@@ -315,10 +427,10 @@ These features form the mandatory MVP foundation:
 4. **Delete Task**: Remove a todo from the store
 5. **Mark Complete/Incomplete**: Toggle the completed status
 
-### Intermediate Level — Organization & Usability (Phase II - Current)
+### Intermediate Level — Organization & Usability (Phase II - Completed)
 
-These features are NOW in scope for Phase II:
-- **User Authentication**: Signup and signin via Better Auth
+These features are implemented in Phase II:
+- **User Authentication**: Signup and signin via JWT
 - **Task Priorities**: Assign high / medium / low priority
 - **Tags/Categories**: Label tasks (e.g., work, home, shopping)
 - **Search**: Find tasks by keyword in title/description
@@ -329,13 +441,22 @@ These features are NOW in scope for Phase II:
 - **Recurring Tasks**: Automatic regeneration of todos on daily/weekly/monthly schedules
 - **Responsive Web UI**: Modern, professional interface for desktop and mobile
 
-### Advanced Level — Intelligent Features (Phase III - Future)
+### Advanced Level — AI-Powered Conversational Interface (Phase III - Current)
 
-These features are strictly OUT OF SCOPE until Phase III:
-- Intelligent scheduling or suggestions
-- AI-powered features (smart categorization, priority suggestions)
-- Natural language task creation
+These features are NOW in scope for Phase III:
+- **Natural Language Todo Management**: Users interact via conversational text
+- **AI-Powered Task Operations**: Add, list, update, delete, complete todos via chat
+- **MCP Tool Integration**: AI agent uses MCP tools for all todo operations
+- **Conversation Persistence**: Chat history stored in database, resumable after restart
+- **Context-Aware Responses**: AI understands conversation context for follow-up queries
+- **ChatKit Interface**: Modern conversational UI using OpenAI ChatKit
+
+**Strictly OUT OF SCOPE for Phase III:**
+- Intelligent scheduling or automatic priority suggestions
+- Smart categorization or tag recommendations
 - Calendar integration with external services
+- Voice input or output
+- Multi-modal interactions (images, files)
 
 ## Success Criteria
 
@@ -349,7 +470,7 @@ Phase I is considered complete when:
 - Code follows all principles defined in this constitution
 - Architecture supports future phase expansion
 
-### Phase II Completion Requirements
+### Phase II Completion Requirements (Completed)
 
 Phase II is considered complete when:
 - User authentication works correctly (signup, signin, signout)
@@ -363,6 +484,21 @@ Phase II is considered complete when:
 - Web UI follows modern design principles with animations
 - All user data is properly scoped and isolated
 - Application is deployable to production environment
+- Code follows all principles defined in this constitution
+
+### Phase III Completion Requirements
+
+Phase III is considered complete when:
+- Users can interact with todos via natural language chat
+- AI correctly interprets and executes todo operations (add, list, update, delete, complete)
+- MCP tools are properly exposed and invokable by the AI agent
+- Conversations persist in the database
+- Users can resume previous conversations after server restart
+- Chat UI displays conversation history correctly
+- AI responses are contextually appropriate and accurate
+- All operations respect user authentication scope
+- Integration tests verify end-to-end chat flows
+- Application remains stateless (no in-memory state between requests)
 - Code follows all principles defined in this constitution
 
 ## Governance
@@ -390,4 +526,4 @@ Constitution versions follow semantic versioning:
 - Complexity beyond what is specified MUST be justified
 - Claude Code MUST cite this constitution when refusing out-of-scope requests
 
-**Version**: 3.1.0 | **Ratified**: 2025-12-26 | **Last Amended**: 2026-01-03
+**Version**: 4.0.0 | **Ratified**: 2025-12-26 | **Last Amended**: 2026-01-18
