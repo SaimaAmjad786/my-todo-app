@@ -19,9 +19,8 @@ settings = get_settings()
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Application lifespan events."""
-    # Startup: create database tables (drop existing for development)
+    # Startup: create database tables if they don't exist
     async with engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.drop_all)
         await conn.run_sync(SQLModel.metadata.create_all)
     yield
     # Shutdown: cleanup if needed

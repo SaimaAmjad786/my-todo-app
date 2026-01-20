@@ -1,9 +1,16 @@
 """FastAPI application entry point with CORS middleware and health check."""
 
+import logging
 from contextlib import asynccontextmanager
 from collections.abc import AsyncIterator
 
 from fastapi import FastAPI
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s %(name)s: %(message)s'
+)
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
@@ -21,7 +28,9 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Application lifespan events."""
     # Startup: create database tables (drop existing for development)
     async with engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.drop_all)
+        # Drop all tables with CASCADE to handle orphan tables
+        await conn.execute(text("DROP SCHEMA public CASCADE"))
+        await conn.execute(text("CREATE SCHEMA public"))
         await conn.run_sync(SQLModel.metadata.create_all)
     yield
     # Shutdown: cleanup if needed

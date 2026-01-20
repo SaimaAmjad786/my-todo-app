@@ -9,6 +9,7 @@ from src.models.base import BaseModel
 if TYPE_CHECKING:
     from src.models.todo import Todo
     from src.models.tag import Tag
+    from src.models.conversation import Conversation
 
 
 class User(BaseModel, table=True):
@@ -23,3 +24,4 @@ class User(BaseModel, table=True):
     # Relationships
     todos: list["Todo"] = Relationship(back_populates="user")
     tags: list["Tag"] = Relationship(back_populates="user")
+    conversations: list["Conversation"] = Relationship(back_populates="user")

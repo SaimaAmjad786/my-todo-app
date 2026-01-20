@@ -26,6 +26,10 @@ class Settings(BaseSettings):
     # Debug
     debug: bool = False
 
+    # Phase III - AI Chatbot (Cohere)
+    cohere_api_key: str = ""
+    cohere_model: str = "command-r-08-2024"
+
     @property
     def cors_origins_list(self) -> list[str]:
         """Parse CORS origins from comma-separated string."""
